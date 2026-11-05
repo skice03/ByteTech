@@ -1,0 +1,237 @@
+//https://dreampuf.github.io/GraphvizOnline/
+// PK, FK and UK unique key
+graph ByteTech_ERD {
+  graph [rankdir=TB, bgcolor="white", pad=0.45, nodesep=0.65, ranksep=0.85,
+    splines=polyline, overlap=false, outputorder=edgesfirst, fontname="Arial",
+    label="ByteTech - Entity Relationship Diagram\nTables, attributes, named relationships and cardinalities",
+    labelloc=t, fontsize=24, fontcolor="#153B33"];
+  node [fontname="Arial", fontsize=12, color="#475569"];
+  edge [fontname="Arial", fontsize=14, color="#64748B", fontcolor="#0F172A", penwidth=1.5];
+
+  users [shape=plain, id="entity_users", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>users</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B>UK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">email</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(254)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">password_hash</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(255)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">first_name</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">last_name</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">role</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">user_role</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  user_sessions [shape=plain, id="entity_user_sessions", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>user_sessions</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">token_hash</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">char(64)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">user_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">csrf_token_hash</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">char(64)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">expires_at</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">datetime</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  user_addresses [shape=plain, id="entity_user_addresses", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>user_addresses</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">user_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">recipient_name</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(200)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">phone</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(32)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">address_line</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(255)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">city</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">region</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">postal_code</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(20)</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  categories [shape=plain, id="entity_categories", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>categories</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B>UK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">name</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">is_active</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">boolean</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  products [shape=plain, id="entity_products", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>products</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">category_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">name</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(200)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">description</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">text</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">price</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">decimal(10,2)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">stock_quantity</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">is_active</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">boolean</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  product_images [shape=plain, id="entity_product_images", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>product_images</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">product_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">url</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(500)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">alt_text</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(255)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">sort_order</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">smallint unsigned</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  cart_items [shape=plain, id="entity_cart_items", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>cart_items</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#E9D5FF"><B>PK, FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">user_id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#E9D5FF"><B>PK, FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">product_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">quantity</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  shipping_methods [shape=plain, id="entity_shipping_methods", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>shipping_methods</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B>UK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">name</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">cost</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">decimal(10,2)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">is_active</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">boolean</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  orders [shape=plain, id="entity_orders", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>orders</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B>UK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">order_number</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(40)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">user_id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">shipping_method_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">shipping_method_name</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">status</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">order_status</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">subtotal</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">decimal(10,2)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">shipping_cost</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">decimal(10,2)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">total</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">decimal(10,2)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">recipient_name</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(200)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">phone</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(32)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">address_line</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(255)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">city</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">region</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">postal_code</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(20)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">stock_deducted_at</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">datetime</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">stock_restored_at</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">datetime</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">created_at</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">datetime</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  order_items [shape=plain, id="entity_order_items", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>order_items</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#E9D5FF"><B>PK, FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">order_id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#E9D5FF"><B>PK, FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">product_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">product_name</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(200)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">unit_price</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">decimal(10,2)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">quantity</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  payments [shape=plain, id="entity_payments", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>payments</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">order_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B>UK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">stripe_checkout_session_id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(255)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B>UK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">stripe_payment_intent_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">varchar(255)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B>UK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">idempotency_key</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">amount</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">decimal(10,2)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">status</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">payment_status</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">created_at</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">datetime</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  payment_events [shape=plain, id="entity_payment_events", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>payment_events</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#DCFCE7"><B>PK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">stripe_event_id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(255)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFEDD5"><B>FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">payment_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">event_type</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">varchar(100)</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">processed_at</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">datetime</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  stock_reservations [shape=plain, id="entity_stock_reservations", label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#94A3B8">
+      <TR><TD COLSPAN="3" BGCOLOR="#166534"><FONT COLOR="white" POINT-SIZE="16"><B>stock_reservations</B></FONT></TD></TR>
+      <TR><TD BGCOLOR="#E2E8F0"><B>Key</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Attribute</B></TD><TD BGCOLOR="#E2E8F0" ALIGN="LEFT"><B>Type</B></TD></TR>
+      <TR><TD BGCOLOR="#E9D5FF"><B>PK, FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">order_id</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#E9D5FF"><B>PK, FK</B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">product_id</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">quantity</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">int unsigned</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC">status</TD><TD ALIGN="LEFT" BGCOLOR="#F8FAFC"><FONT COLOR="#475569">reservation_status</FONT></TD></TR>
+      <TR><TD BGCOLOR="#FFFFFF"><B> </B></TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF">expires_at</TD><TD ALIGN="LEFT" BGCOLOR="#FFFFFF"><FONT COLOR="#475569">datetime</FONT></TD></TR>
+    </TABLE>
+  >];
+
+  // Each relationship has a named diamond. Labels on each half-line
+  // state the number of records at its table end. 0..N = zero or many.
+  node [shape=diamond, style=filled, fillcolor="#F97316", color="#EA580C",
+    fontcolor="white", fontsize=13, margin="0.15,0.10", penwidth=1.5];
+  has_session [id="relationship_has_session", label="Has\nsession\n1:N"];
+  users -- has_session [label="1"];
+  has_session -- user_sessions [label="0..N"];
+
+  saves_address [id="relationship_saves_address", label="Saves\naddress\n1:N"];
+  users -- saves_address [label="1"];
+  saves_address -- user_addresses [label="0..N"];
+
+  categorizes [id="relationship_categorizes", label="Contains\nproduct\n1:N"];
+  categories -- categorizes [label="1"];
+  categorizes -- products [label="0..N"];
+
+  has_image [id="relationship_has_image", label="Has\nimage\n1:N"];
+  products -- has_image [label="1"];
+  has_image -- product_images [label="1..N"];
+
+  keeps_cart_item [id="relationship_keeps_cart_item", label="Keeps cart\nitem\n1:N"];
+  users -- keeps_cart_item [label="1"];
+  keeps_cart_item -- cart_items [label="0..N"];
+
+  cart_references_product [id="relationship_cart_references_product", label="References\nproduct\n1:N"];
+  products -- cart_references_product [label="1"];
+  cart_references_product -- cart_items [label="0..N"];
+
+  places_order [id="relationship_places_order", label="Places\norder\n1:N"];
+  users -- places_order [label="1"];
+  places_order -- orders [label="0..N"];
+
+  uses_shipping [id="relationship_uses_shipping", label="Used for\ndelivery\n1:N"];
+  shipping_methods -- uses_shipping [label="1"];
+  uses_shipping -- orders [label="0..N"];
+
+  contains_item [id="relationship_contains_item", label="Contains\nitem\n1:N"];
+  orders -- contains_item [label="1"];
+  contains_item -- order_items [label="1..N"];
+
+  appears_in [id="relationship_appears_in", label="Appears\nin\n1:N"];
+  products -- appears_in [label="1"];
+  appears_in -- order_items [label="0..N"];
+
+  has_payment [id="relationship_has_payment", label="Has payment\nattempt\n1:N"];
+  orders -- has_payment [label="1"];
+  has_payment -- payments [label="0..N"];
+
+  has_event [id="relationship_has_event", label="Has processed\nevent\n1:N"];
+  payments -- has_event [label="1"];
+  has_event -- payment_events [label="0..N"];
+
+  has_reservation [id="relationship_has_reservation", label="Has\nreservation\n1:1"];
+  order_items -- has_reservation [label="1"];
+  has_reservation -- stock_reservations [label="0..1"];
+}
