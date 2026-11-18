@@ -5,3 +5,11 @@
 node_modules/
 coverage/
 *.log
+
+# Track only the final presentation diagrams in docs.
+/docs/*
+!/docs/relational model.png
+!/docs/entity relationship diagram.png
+!/docs/ByteTech_API_Endpoints.png
+!/docs/ByteTech_Architecture.png
+!/docs/ByteTech_Critical_Flow.png
