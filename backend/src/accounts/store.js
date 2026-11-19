@@ -45,6 +45,7 @@ export function createAccountStore(db) {
     },
     async createAddress(userId, address) {
       return withTransaction(db, async connection => {
+        // LAST_INSERT_ID makes insertId return the shared location's ID even when it already exists.
         const [result] = await connection.execute(`INSERT INTO user_addresses (address_line, city, region, postal_code)
           VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE id = LAST_INSERT_ID(id)`,
         [address.addressLine, address.city, address.region, address.postalCode]);

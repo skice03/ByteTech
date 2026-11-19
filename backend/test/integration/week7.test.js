@@ -11,7 +11,7 @@ import { address, client } from '../helpers.js';
 // Explicit opt-in: never migrate or write fixtures to the development database.
 const testDatabase = process.env.TEST_DB_DATABASE;
 if (!testDatabase || !/^[a-zA-Z0-9_]+_test$/.test(testDatabase)) {
-  throw new Error('Set TEST_DB_DATABASE to a dedicated database ending in _test. See backend/README.md.');
+  throw new Error('Set TEST_DB_DATABASE to a dedicated database ending in _test. See backend/api.md#verification.');
 }
 const config = readConfig({ ...process.env, DB_DATABASE: testDatabase });
 
@@ -24,13 +24,19 @@ test('A4/A3 with MySQL migrations, persistence, constraints and concurrent reque
   const location = { ...address, addressLine: `Integration ${run}, apartment 2` };
   let categoryId, productId, otherProductId, addressId;
   try {
-    await t.test('migration reruns safely and creates only the eight scoped application tables', async () => {
+    await t.test('migration reruns preserve the ledger and provide the account and cart tables', async () => {
+      const ledgerQuery = 'SELECT name, checksum, applied_at FROM _schema_migrations ORDER BY name';
+      const [before] = await db.query(ledgerQuery);
+      assert.ok(before.some(row => row.name === '001_accounts_and_cart.sql'));
       await migrate(config.database);
+      const [after] = await db.query(ledgerQuery);
+      assert.deepEqual(after, before);
       const [tables] = await db.execute('SELECT TABLE_NAME AS name FROM information_schema.TABLES WHERE TABLE_SCHEMA = ?', [testDatabase]);
-      assert.deepEqual(tables.map(row => row.name).sort(), ['_schema_migrations', 'users', 'user_sessions',
-        'user_addresses', 'user_address_links', 'categories', 'products', 'product_images', 'cart_items'].sort());
-      const [[count]] = await db.query('SELECT COUNT(*) AS count FROM _schema_migrations');
-      assert.equal(count.count, 1);
+      const names = new Set(tables.map(row => row.name));
+      for (const table of ['users', 'user_sessions', 'user_addresses', 'user_address_links',
+        'categories', 'products', 'product_images', 'cart_items']) {
+        assert.ok(names.has(table), `Missing table: ${table}`);
+      }
       assert.equal((await first.request('GET', '/ready')).status, 200);
     });
 

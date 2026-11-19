@@ -12,15 +12,7 @@ CREATE USER 'bytetech'@'localhost' IDENTIFIED BY 'replace_with_your_local_passwo
 GRANT ALL PRIVILEGES ON bytetech.* TO 'bytetech'@'localhost';
 ```
 
-From the repository root:
-
-```sh
-cp -n .env.example .env
-# Set DB_USER, DB_PASSWORD and DB_DATABASE in .env to match your local MySQL.
-npm --prefix backend ci
-npm --prefix backend run db:migrate
-npm --prefix backend run dev
-```
+Once the database exists, follow the [project README](../README.md#run-locally) to configure and start the API.
 
 `.env` is local and ignored by Git. `.env.example` contains public example values, not live credentials. `CORS_ORIGIN` must be the exact frontend origin, normally `http://localhost:5173`, with no trailing slash. `SESSION_TTL_HOURS` defaults to 24 (allowed: 1–168); existing configuration files can omit it. `NODE_ENV=production` enables Secure cookies and requires HTTPS. An optional `DB_SOCKET` can select a local Unix socket instead of TCP.
 

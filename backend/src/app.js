@@ -46,6 +46,9 @@ export function createApp({ db, corsOrigin = 'http://localhost:5173', sessionOpt
     if (error.type === 'entity.too.large') {
       return res.status(413).json({ error: 'Request body exceeds 100 KB.' });
     }
+    if (error.type === 'charset.unsupported' || error.type === 'encoding.unsupported') {
+      return res.status(415).json({ error: 'Unsupported request body encoding.' });
+    }
     if (error instanceof HttpError) {
       return res.status(error.status).json({ error: error.message, ...(error.fields ? { fields: error.fields } : {}) });
     }

@@ -225,6 +225,13 @@ test('health routes, CORS, unknown routes and JSON error responses remain availa
   assert.equal((await browser.request('GET','/missing')).status,404);
   assert.equal((await browser.request('POST','/missing',undefined,{rawBody:'{broken'})).status,400);
   assert.equal((await browser.request('POST','/missing',{data:'x'.repeat(110000)})).status,413);
+  for (const headers of [
+    { 'content-type': 'application/json; charset=iso-8859-1' },
+    { 'content-encoding': 'unsupported' }
+  ]) {
+    const response = await browser.request('POST', '/auth/login', {}, { headers });
+    assert.equal(response.status, 415);
+  }
 });
 
 test('configuration validates origins, ports and session duration', () => {
