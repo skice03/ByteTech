@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router';
-import { formatPrice, useApi } from '../api.js';
+import { Link, useNavigate, useParams } from 'react-router';
+import { apiWrite, formatPrice, useApi } from '../api.js';
 import Availability from '../components/Availability.jsx';
 import Status from '../components/Status.jsx';
 
@@ -25,7 +25,37 @@ function Gallery({ images, name }) {
   );
 }
 
-export default function ProductPage() {
+function AddToCart({ product, user }) {
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  if (!product.isAvailable || user === undefined) return null;
+  if (!user) return <Link className="primary add-link" to="/login" state={{ from: `/products/${product.id}` }}>Log in to add to cart</Link>;
+
+  async function add(event) {
+    event.preventDefault();
+    const quantity = Number(event.currentTarget.elements.quantity.value);
+    setError('');
+    setBusy(true);
+    try {
+      await apiWrite('POST', '/cart/items', { productId: product.id, quantity });
+      navigate('/cart');
+    } catch (problem) {
+      setError(problem.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  return <>
+    <form className="line-actions add-item" onSubmit={add}>
+      <label>Quantity<input name="quantity" type="number" min="1" max={product.stockQuantity} defaultValue="1" required /></label>
+      <button className="primary" disabled={busy}>Add to cart</button>
+    </form>
+    {error && <p className="error" role="alert">{error}</p>}
+  </>;
+}
+
+export default function ProductPage({ user }) {
   const { productId } = useParams();
   const { data, error, loading } = useApi(`/products/${productId}`);
   const product = data?.product;
@@ -54,6 +84,7 @@ export default function ProductPage() {
           <h1>{product.name}</h1>
           <p className="price large">{formatPrice(product.price)}</p>
           <Availability product={product} detailed />
+          <AddToCart key={`${product.id}-${user?.id ?? 'guest'}`} product={product} user={user} />
           <h2>Description</h2>
           <p className="description">{product.description}</p>
         </div>

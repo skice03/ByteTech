@@ -1,47 +1,40 @@
 # ByteTech
 
-ByteTech is an e-commerce project for computer hardware, software licenses and other tech products. The planned stack is React, Express, MySQL and Stripe in test mode.
+ByteTech is a computer hardware and software store built with React, Express and MySQL. The project covers A1–A12 and plans to use Stripe in test mode. No bonus features are selected.
 
-The scope covers mandatory requirements A1–A12. No bonus features are selected.
+## Working prototype
 
-## Implemented so far
+- **A1 · Catalog.** Browse 34 seeded products in five categories, with product pages, images, RON prices and stock.
+- **A2 · Search.** Search by product name and see when nothing matches.
+- **A3 · Cart.** Add, update and remove items. The server checks stock and calculates the total. The cart persists after logout.
+- **A4 · Accounts.** Register, log in, log out and save delivery addresses.
 
-- Database design and base API setup.
-- **A4:** registration, login/logout and saved delivery addresses.
-- **A3:** persistent shopping cart, server-calculated RON totals and stock checks.
-- **A1:** repeatable catalog seed (34 products in five categories), public catalog API and React pages for the paginated product list (24 per page), each category and each product.
-- Account/cart/catalog validation, session protection and automated tests.
-
-Search, React login/cart, checkout, payments, order history and administration are still planned.
+The week 7 materials include the [presentation slides](presentation/p2-slides.pdf) and the [project specification](presentation/p2-specification.pdf).
 
 ## Run locally
 
-Requires Node.js 24+ and MySQL 8.4+, with a database and user created. The backend API and the React frontend run as two processes.
+Use Node.js 24+ and a running MySQL 8.4+ database with a user that can create tables. [Database setup](backend/api.md#database-setup)
 
-From the `ByteTech` root, copy the example configuration:
+From the repository root, copy the configuration and set your MySQL credentials in `.env`.
 
 ```sh
 cp -n .env.example .env
 ```
 
-Set your MySQL credentials in `.env`, then run:
+Run the one-time setup to install dependencies, migrate the database and seed the catalog.
 
 ```sh
-npm --prefix backend ci
-npm --prefix backend run db:migrate
-npm --prefix backend run db:seed
+npm run setup
+```
+
+Start the API and storefront in separate terminals.
+
+```sh
 npm --prefix backend run dev
 ```
 
-Check the API and its database connection at <http://localhost:3000/api/v1/ready>. In a second terminal, start the frontend:
-
 ```sh
-npm --prefix frontend ci
 npm --prefix frontend run dev
 ```
 
-Open the catalog at <http://localhost:5173>. `db:seed` can be run again at any time: it updates the demo products in place and resets their stock without creating duplicates.
-
-Product images are original SVG illustrations made for this project, stored in `frontend/public/images/products/`. Product descriptions are original text.
-
-Run tests with `npm --prefix backend test`. Database setup and endpoint details are in the [API reference](backend/api.md).
+Open [ByteTech](http://localhost:5173). Choose **Log in → Create an account** for your first visit. Run the API tests with `npm --prefix backend test`.

@@ -5,21 +5,31 @@ import ProductCard from '../components/ProductCard.jsx';
 import Pagination from '../components/Pagination.jsx';
 import Status from '../components/Status.jsx';
 
-// Lists all products ("/") or one category ("/categories/:categoryId"), 24 per page.
-export default function CatalogPage() {
+export default function CatalogPage({ search = false }) {
   const { categoryId } = useParams();
   const [searchParams] = useSearchParams();
+  const term = search ? (searchParams.get('q') ?? '').trim() : '';
   const page = /^[1-9]\d*$/.test(searchParams.get('page') ?? '') ? Number(searchParams.get('page')) : 1;
 
   const query = new URLSearchParams();
+  if (term) query.set('q', term);
   if (categoryId) query.set('categoryId', categoryId);
   if (page > 1) query.set('page', String(page));
-  const products = useApi(`/products${query.size ? `?${query}` : ''}`);
+  const endpoint = term ? '/products/search' : '/products';
+  const products = useApi(`${endpoint}${query.size ? `?${query}` : ''}`);
   const category = useApi(categoryId ? `/categories/${categoryId}` : null);
 
-  const title = categoryId ? category.data?.category.name ?? 'Category' : 'All products';
+  let title = 'All products';
+  let basePath = '/';
+  if (categoryId) {
+    title = category.data?.category.name ?? 'Category';
+    basePath = `/categories/${categoryId}`;
+  } else if (term) {
+    title = `Results for “${term}”`;
+    basePath = `/search?${new URLSearchParams({ q: term })}`;
+  }
   useEffect(() => { document.title = `${title} · ByteTech`; }, [title]);
-  useEffect(() => { window.scrollTo(0, 0); }, [categoryId, page]);
+  useEffect(() => { window.scrollTo(0, 0); }, [categoryId, term, page]);
 
   if (products.error) {
     return (
@@ -32,7 +42,6 @@ export default function CatalogPage() {
 
   const data = products.data;
   const pagination = data?.pagination;
-  const basePath = categoryId ? `/categories/${categoryId}` : '/';
   return (
     <section aria-busy={products.loading}>
       <div className="page-heading">
@@ -41,9 +50,13 @@ export default function CatalogPage() {
       </div>
       {!data && products.loading && <p className="muted">Loading products…</p>}
       {data && data.products.length === 0 && (
-        <Status title="No products here">
-          <p>{page > 1 ? 'This page is past the end of the list.' : 'This category has no products yet.'}</p>
-          <Link to={basePath}>Go to the first page</Link>
+        <Status title={term && page === 1 ? 'No matching products' : 'No products here'}>
+          {page > 1 ? <Link to={basePath}>Go to the first page</Link> : (
+            <>
+              <p>{term ? 'Try another product name.' : 'There are no products to display.'}</p>
+              <Link to="/">Browse all products</Link>
+            </>
+          )}
         </Status>
       )}
       {data && data.products.length > 0 && (

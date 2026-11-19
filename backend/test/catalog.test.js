@@ -35,8 +35,9 @@ function memoryCatalog() {
       const c = categories.find(item => item.id === id && item.isActive);
       return c ? { id: c.id, name: c.name } : null;
     },
-    async listProducts({ categoryId, limit, offset }) {
-      const matches = visible().filter(p => !categoryId || p.categoryId === categoryId);
+    async listProducts({ categoryId, searchTerm = '', limit, offset }) {
+      const matches = visible().filter(p => (!categoryId || p.categoryId === categoryId)
+        && p.name.toLowerCase().includes(searchTerm.toLowerCase()));
       return { rows: matches.slice(offset, offset + limit).map(row), total: matches.length };
     },
     async findProduct(id) {
@@ -83,6 +84,27 @@ test('category pages list only that category and reject unknown or inactive cate
   assert.equal(monitors.body.pagination.totalPages, 1);
   assert.equal((await browser.request('GET', '/products?categoryId=3')).status, 404);
   assert.equal((await browser.request('GET', '/products?categoryId=99')).status, 404);
+});
+
+test('name search trims text, filters before pagination and omits inactive or unmatched products', async () => {
+  const { browser } = setup();
+  const result = await browser.request('GET', '/products/search?q=%20PrOdUcT%20&page=2');
+  assert.equal(result.status, 200);
+  assert.deepEqual(result.body.pagination, { page: 2, pageSize: 24, totalItems: 29, totalPages: 2 });
+  assert.deepEqual(result.body.products.map(p => p.id), [26, 27, 28, 29, 30]);
+  for (const term of ['Description', 'Hidden', '%25', '_']) {
+    const none = await browser.request('GET', '/products/search?q=' + term);
+    assert.equal(none.status, 200);
+    assert.deepEqual(none.body.products, []);
+    assert.equal(none.body.pagination.totalItems, 0);
+  }
+});
+
+test('search requires a single nonblank name of at most 200 characters', async () => {
+  const { browser } = setup();
+  for (const query of ['', 'q=%20', 'q=a&q=b', 'q=' + 'a'.repeat(201)]) {
+    assert.equal((await browser.request('GET', '/products/search?' + query)).status, 400, query);
+  }
 });
 
 test('list items expose two-decimal RON prices, availability and the first image', async () => {

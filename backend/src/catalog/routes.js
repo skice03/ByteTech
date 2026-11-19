@@ -41,14 +41,20 @@ export function createCatalogRoutes({ store }) {
     if (!found) throw new HttpError(404, 'Category not found.');
     res.json({ category: found });
   });
-  router.get('/products', async (req, res) => {
-    const { page, categoryId } = listQuery(req.query);
+  async function sendProductPage(res, { page, categoryId }, searchTerm) {
     if (categoryId && !await store.findCategory(categoryId)) throw new HttpError(404, 'Category not found.');
-    const { rows, total } = await store.listProducts({ categoryId, limit: pageSize, offset: (page - 1) * pageSize });
+    const { rows, total } = await store.listProducts({ categoryId, searchTerm, limit: pageSize, offset: (page - 1) * pageSize });
     res.json({
       products: rows.map(summary),
       pagination: { page, pageSize, totalItems: total, totalPages: Math.ceil(total / pageSize) }
     });
+  }
+  router.get('/products', (req, res) => sendProductPage(res, listQuery(req.query)));
+  router.get('/products/search', (req, res) => {
+    const { q, ...filters } = req.query;
+    const term = typeof q === 'string' ? q.trim() : '';
+    if (!term || [...term].length > 200) throw new HttpError(400, 'Enter a product name between 1 and 200 characters.');
+    return sendProductPage(res, listQuery(filters), term);
   });
   router.get('/products/:productId', async (req, res) => {
     const row = await store.findProduct(pathId(req.params.productId));

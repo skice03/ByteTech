@@ -1,6 +1,10 @@
 import { Link } from 'react-router';
 
-const pageLink = (basePath, page) => (page > 1 ? `${basePath}?page=${page}` : basePath);
+function pageLink(basePath, page) {
+  if (page === 1) return basePath;
+  const separator = basePath.includes('?') ? '&' : '?';
+  return `${basePath}${separator}page=${page}`;
+}
 
 export default function Pagination({ page, totalPages, basePath }) {
   if (totalPages <= 1) return null;

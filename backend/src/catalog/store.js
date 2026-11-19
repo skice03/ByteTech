@@ -15,10 +15,19 @@ export function createCatalogStore(db) {
       const [rows] = await db.execute('SELECT id, name FROM categories WHERE id = ? AND is_active = TRUE', [categoryId]);
       return rows[0] ?? null;
     },
-    async listProducts({ categoryId, limit, offset }) {
-      const filter = categoryId ? ' AND p.category_id = ?' : '';
-      const params = categoryId ? [categoryId] : [];
-      const from = `FROM products p JOIN categories c ON c.id = p.category_id WHERE ${visible}${filter}`;
+    async listProducts({ categoryId, searchTerm, limit, offset }) {
+      const conditions = [visible];
+      const params = [];
+      if (categoryId) {
+        conditions.push('p.category_id = ?');
+        params.push(categoryId);
+      }
+      if (searchTerm) {
+        // LOCATE uses the name's case-insensitive collation and treats % and _ literally.
+        conditions.push('LOCATE(?, p.name) > 0');
+        params.push(searchTerm);
+      }
+      const from = `FROM products p JOIN categories c ON c.id = p.category_id WHERE ${conditions.join(' AND ')}`;
       const [[{ total }]] = await db.execute(`SELECT COUNT(*) AS total ${from}`, params);
       // mysql2 prepared statements need LIMIT/OFFSET values as strings.
       const [rows] = await db.execute(`SELECT p.id, p.name, p.price, p.stock_quantity AS stockQuantity,

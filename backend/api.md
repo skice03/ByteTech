@@ -1,6 +1,6 @@
 # ByteTech API reference
 
-The Express/MySQL API currently implements user accounts and saved addresses (A4), a persistent shopping cart (A3) and public catalog reads (A1). All amounts are in RON. Search, checkout, payments and administration remain planned.
+The Express/MySQL API serves the catalog (A1), product-name search (A2), persistent carts (A3) and accounts with saved delivery addresses (A4). All amounts are in RON.
 
 ## Database setup
 
@@ -41,6 +41,7 @@ Base URL: `http://localhost:3000/api/v1`. Requests and responses use JSON. User 
 | GET | `/categories` | Public | `{ categories: [{ id, name, productCount }] }`, active categories by name. |
 | GET | `/categories/:categoryId` | Public | `{ category: { id, name } }`; 404 if missing or inactive. |
 | GET | `/products?categoryId=&page=` | Public | Both parameters optional → `{ products, pagination }`, 24 per page. |
+| GET | `/products/search?q=&page=` | Public | A case-insensitive substring of the product name (1–200 characters). Uses the same pagination and visibility as the catalog. No matches gives 200 and an empty list. |
 | GET | `/products/:productId` | Public | `{ product }` with description and all images; 404 if missing or inactive. |
 | GET | `/cart` | Signed in | `{ cart }`. |
 | POST | `/cart/items` | Signed in + CSRF | `{ productId, quantity }` adds/increments → 201 `{ cart }`. |
@@ -51,7 +52,7 @@ Registration trims names, lowercases/trims email and always creates a customer. 
 
 Sessions are random opaque tokens in HttpOnly, SameSite=Lax cookies. MySQL holds only session/CSRF hashes and a fixed expiry. Login rotates tokens, logout deletes the current session, and expiry requires login again. Cart/address records remain. Authenticated sessions survive API restarts. An anonymous CSRF challenge expires after 30 minutes and must be fetched again after an API restart.
 
-Every frontend `fetch` must use `credentials: 'include'`. Fetch `/auth/csrf` first and keep the returned token in memory; send it as `X-CSRF-Token` on POST/PATCH/DELETE. Send `Content-Type: application/json` with JSON bodies. Browser requests must come from `CORS_ORIGIN`; command-line clients must send that `Origin` header explicitly. After login, replace the anonymous token with `csrfToken` from the login response. After a page reload, fetch `/auth/csrf` again. Do not read or store the session cookie in JavaScript.
+The storefront sends cookies with `credentials: 'include'`. Before each write it fetches `/auth/csrf` and sends the current token in `X-CSRF-Token`, including after login and page reloads. JSON bodies use `Content-Type: application/json`. Browser writes must come from `CORS_ORIGIN`. A command-line client must send that `Origin` explicitly and retain the cookies. The session cookie is HttpOnly.
 
 ```js
 const base = 'http://localhost:3000/api/v1';
@@ -122,7 +123,7 @@ Errors use `{ error: "message", fields?: { ... } }`. Handle: 400 invalid input/J
 
 ## Verification
 
-From the root, `npm --prefix backend test` runs the account/cart tests without MySQL. These include hashing, session rotation/expiry, CSRF, shared-address privacy, persistence after logout, ownership, quantity checks and exact totals.
+From the root, `npm --prefix backend test` covers catalog pagination, product-name search, account sessions, CSRF, shared-address privacy, cart ownership, stock limits and RON totals.
 
 For real database checks, create a **separate empty database** ending in `_test` (for example `bytetech_week7_test`) and a test user with privileges only on that database. From `backend/`:
 
@@ -132,4 +133,4 @@ TEST_DB_DATABASE=bytetech_week7_test DB_USER=your_test_user DB_PASSWORD=your_tes
 
 Set `DB_HOST`/`DB_PORT` or optional `DB_SOCKET` as needed. This command applies migrations to the test database and removes only its own uniquely named fixtures afterward; the schema remains. It refuses a missing/non-test database name. Its eight account/cart scenarios verify migration reruns, SQL persistence, concurrent shared-address saves, concurrent cart additions, transactions, foreign keys, unique/check constraints and user deletion. Those test products are temporary fixtures. The catalog scenarios run the A1 seed twice in the test database to confirm it creates no duplicates, then read the seeded categories, pages and product details through the API; the seeded catalog stays in the test database.
 
-These checks cover A3/A4; A12's required payment-confirmation tests still belong to the later payment work.
+The current checks cover A1–A4. Payment confirmation tests are planned with the Stripe integration.

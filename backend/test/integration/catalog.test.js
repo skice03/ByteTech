@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { randomUUID } from 'node:crypto';
 import test from 'node:test';
 import { migrate } from '../../scripts/migrate.js';
 import { seedCatalog } from '../../scripts/seed-catalog.js';
@@ -57,6 +58,37 @@ test('A1 seed and catalog reads with MySQL', async t => {
       assert.equal(detail.price, expected.price);
       assert.equal(detail.stockQuantity, expected.stockQuantity);
       assert.deepEqual(detail.images, expected.images);
+    });
+    await t.test('MySQL searches product names case-insensitively and treats wildcard characters literally', async () => {
+      const result = await browser.request('GET', '/products/search?q=UlTrAbOoK');
+      assert.equal(result.status, 200);
+      assert.ok(result.body.products.some(product => product.name === catalog[0].products[0].name));
+      assert.ok(result.body.products.every(product => product.name.toLowerCase().includes('ultrabook')));
+      const literal = await browser.request('GET', '/products/search?q=%25_');
+      assert.equal(literal.status, 200);
+      assert.ok(literal.body.products.every(product => product.name.includes('%_')));
+    });
+    await t.test('a shopper can find a seeded product, sign in and keep that product in their cart', async () => {
+      const email = `catalog-${randomUUID()}@example.test`;
+      const expected = catalog[0].products[0];
+      const result = await browser.request('GET', '/products/search?q=' + encodeURIComponent(expected.name));
+      const product = result.body.products.find(item => item.name === expected.name);
+      assert.ok(product);
+      try {
+        assert.equal((await browser.register(email)).status, 201);
+        assert.equal((await browser.login(email)).status, 200);
+        const added = await browser.post('/cart/items', { productId: product.id, quantity: 1 });
+        assert.equal(added.status, 201);
+        assert.equal(added.body.cart.total, expected.price);
+        assert.equal((await browser.post('/auth/logout', {})).status, 204);
+        assert.equal((await browser.request('GET', '/cart')).status, 401);
+        assert.equal((await browser.login(email)).status, 200);
+        const cart = (await browser.request('GET', '/cart')).body.cart;
+        assert.equal(cart.items[0].productId, product.id);
+        assert.equal(cart.total, expected.price);
+      } finally {
+        await db.execute('DELETE FROM users WHERE email = ?', [email]);
+      }
     });
   } finally {
     await db.end();
