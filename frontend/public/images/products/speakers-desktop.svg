@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Illustration of the 2.0 Desktop Speakers, Bluetooth">
+  <title>Illustration of the 2.0 Desktop Speakers, Bluetooth</title>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ca8a04" stop-opacity="0.18"/><stop offset="1" stop-color="#ca8a04" stop-opacity="0.04"/></linearGradient></defs>
+  <rect width="800" height="600" fill="#ffffff"/>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <ellipse cx="400" cy="520" rx="260" ry="22" fill="#1f2937" opacity="0.08"/>
+    <rect x="155" y="150" width="190" height="320" rx="16" fill="#1f2937"/>
+    <circle cx="250" cy="220" r="34" fill="#374151"/><circle cx="250" cy="220" r="12" fill="#ca8a04"/>
+    <circle cx="250" cy="360" r="70" fill="#374151"/><circle cx="250" cy="360" r="28" fill="#ca8a04"/>
+    <rect x="455" y="150" width="190" height="320" rx="16" fill="#1f2937"/>
+    <circle cx="550" cy="220" r="34" fill="#374151"/><circle cx="550" cy="220" r="12" fill="#ca8a04"/>
+    <circle cx="550" cy="360" r="70" fill="#374151"/><circle cx="550" cy="360" r="28" fill="#ca8a04"/>
+</svg>

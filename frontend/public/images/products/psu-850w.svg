@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Illustration of the 850 W 80 PLUS Gold Modular Power Supply">
+  <title>Illustration of the 850 W 80 PLUS Gold Modular Power Supply</title>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#db2777" stop-opacity="0.18"/><stop offset="1" stop-color="#db2777" stop-opacity="0.04"/></linearGradient></defs>
+  <rect width="800" height="600" fill="#ffffff"/>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <ellipse cx="400" cy="520" rx="260" ry="22" fill="#1f2937" opacity="0.08"/>
+    <rect x="200" y="160" width="400" height="280" rx="16" fill="#1f2937"/>
+    <circle cx="400" cy="300" r="105" fill="#374151"/>
+    <circle cx="400" cy="300" r="90" fill="none" stroke="#e5e7eb" stroke-width="5" opacity="0.6"/><circle cx="400" cy="300" r="70" fill="none" stroke="#e5e7eb" stroke-width="5" opacity="0.6"/><circle cx="400" cy="300" r="50" fill="none" stroke="#e5e7eb" stroke-width="5" opacity="0.6"/><circle cx="400" cy="300" r="30" fill="none" stroke="#e5e7eb" stroke-width="5" opacity="0.6"/>
+    <circle cx="400" cy="300" r="14" fill="#db2777"/>
+    <rect x="200" y="160" width="400" height="18" rx="9" fill="#db2777"/>
+</svg>

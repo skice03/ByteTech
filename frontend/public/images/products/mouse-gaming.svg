@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Illustration of the Lightweight Gaming Mouse, 26,000 DPI">
+  <title>Illustration of the Lightweight Gaming Mouse, 26,000 DPI</title>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ea580c" stop-opacity="0.18"/><stop offset="1" stop-color="#ea580c" stop-opacity="0.04"/></linearGradient></defs>
+  <rect width="800" height="600" fill="#ffffff"/>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <ellipse cx="400" cy="520" rx="260" ry="22" fill="#1f2937" opacity="0.08"/>
+    <path d="M400 140 C500 140 540 230 540 320 C540 420 480 470 400 470 C320 470 260 420 260 320 C260 230 300 140 400 140 Z" fill="#1f2937"/>
+    <path d="M400 140 V270" stroke="#374151" stroke-width="6"/>
+    <path d="M262 270 H538" stroke="#374151" stroke-width="6"/>
+    <rect x="388" y="180" width="24" height="56" rx="12" fill="#ea580c"/>
+    <path d="M300 400 Q400 450 500 400" stroke="#ea580c" stroke-width="8" fill="none"/>
+</svg>

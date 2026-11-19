@@ -13,3 +13,6 @@ coverage/
 !/docs/ByteTech_API_Endpoints.png
 !/docs/ByteTech_Architecture.png
 !/docs/ByteTech_Critical_Flow.png
+
+# Frontend build output.
+dist/

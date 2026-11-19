@@ -1,6 +1,6 @@
 # ByteTech API reference
 
-The Express/MySQL API currently implements user accounts and saved addresses (A4) and a persistent shopping cart (A3). All amounts are in RON. Catalog/search, checkout, payments and administration remain planned.
+The Express/MySQL API currently implements user accounts and saved addresses (A4), a persistent shopping cart (A3) and public catalog reads (A1). All amounts are in RON. Search, checkout, payments and administration remain planned.
 
 ## Database setup
 
@@ -16,7 +16,7 @@ Once the database exists, follow the [project README](../README.md#run-locally) 
 
 `.env` is local and ignored by Git. `.env.example` contains public example values, not live credentials. `CORS_ORIGIN` must be the exact frontend origin, normally `http://localhost:5173`, with no trailing slash. `SESSION_TTL_HOURS` defaults to 24 (allowed: 1–168); existing configuration files can omit it. `NODE_ENV=production` enables Secure cookies and requires HTTPS. An optional `DB_SOCKET` can select a local Unix socket instead of TCP.
 
-The migration creates eight application tables from the agreed 15-table design: `users`, `user_sessions`, `user_addresses`, `user_address_links`, `categories`, `products`, `product_images`, and `cart_items`. The catalog tables let the cart reference real products; no catalog routes or seed products are supplied here. The remaining seven tables will be added with their respective features.
+The migration creates eight application tables from the agreed 15-table design: `users`, `user_sessions`, `user_addresses`, `user_address_links`, `categories`, `products`, `product_images`, and `cart_items`. Run `npm --prefix backend run db:seed` after the migration to load the A1 catalog from `backend/seed/catalog.js`. The seed matches categories and products by name, so running it again updates the same rows (and resets demo stock) instead of adding duplicates; product IDs, carts and any additional images are preserved. The remaining seven tables will be added with their respective features.
 
 `_schema_migrations` is internal migration bookkeeping. Running `db:migrate` again skips applied files and checks their checksums. Add a new numbered SQL file for subsequent changes. MySQL DDL commits implicitly: if a migration partially fails, inspect the affected tables before retrying. This initial migration expects an empty application database; it does not convert a database manually created from the full design.
 
@@ -38,6 +38,10 @@ Base URL: `http://localhost:3000/api/v1`. Requests and responses use JSON. User 
 | GET | `/users/me` | Signed in | `{ user: { id, email, firstName, lastName, role } }`. |
 | GET | `/addresses` | Signed in | `{ addresses: [...] }`, only the current user's saved addresses. |
 | POST | `/addresses` | Signed in + CSRF | Address fields below → 201 `{ address }`. |
+| GET | `/categories` | Public | `{ categories: [{ id, name, productCount }] }`, active categories by name. |
+| GET | `/categories/:categoryId` | Public | `{ category: { id, name } }`; 404 if missing or inactive. |
+| GET | `/products?categoryId=&page=` | Public | Both parameters optional → `{ products, pagination }`, 24 per page. |
+| GET | `/products/:productId` | Public | `{ product }` with description and all images; 404 if missing or inactive. |
 | GET | `/cart` | Signed in | `{ cart }`. |
 | POST | `/cart/items` | Signed in + CSRF | `{ productId, quantity }` adds/increments → 201 `{ cart }`. |
 | PATCH | `/cart/items/:productId` | Signed in + CSRF | `{ quantity }` sets the absolute quantity → `{ cart }`. |
@@ -99,6 +103,21 @@ The server reads current product prices and calculates totals using decimal arit
 
 Adds/updates lock the product and cart row within a transaction and reject the resulting quantity if above stock. Inactive products/categories cannot be added or updated. If stock or availability changes later, GET preserves the saved line and returns `isAvailable: false` so the UI can display the problem. Cart operations do not reserve or decrease stock. Future A7 checkout must account for active reservations and implement payment/cancellation stock changes.
 
+A product list response looks like this. Lists show active products in active categories, ordered by ID. A page past the end returns an empty `products` array. Unknown query parameters, `page` values outside 1–10000 and malformed IDs return 400; an unknown or inactive `categoryId` returns 404.
+
+```json
+{
+  "products": [{
+    "id": 1, "name": "14\" Ultrabook, 16 GB RAM, 512 GB SSD", "price": "4299.00", "currency": "RON",
+    "stockQuantity": 12, "isAvailable": true, "category": { "id": 1, "name": "Laptops" },
+    "image": { "url": "/images/products/ultrabook-14.svg", "altText": "Illustration of the 14\" Ultrabook, 16 GB RAM, 512 GB SSD" }
+  }],
+  "pagination": { "page": 1, "pageSize": 24, "totalItems": 34, "totalPages": 2 }
+}
+```
+
+`GET /products/:productId` returns the same fields plus `description` and an ordered `images` array of `{ url, altText }` in place of `image`. `isAvailable` is `stockQuantity > 0`. Image URLs are paths served by the React app.
+
 Errors use `{ error: "message", fields?: { ... } }`. Handle: 400 invalid input/JSON, 401 login required/invalid credentials, 403 invalid origin/CSRF, 404 missing product/cart line/route, 409 duplicate email/insufficient stock/unavailable product, 413 body over 100 KB, 415 incorrect content type, 429 too many attempts, 503 unavailable/unmigrated database, and generic 500. Protected responses use `Cache-Control: no-store`.
 
 ## Verification
@@ -111,6 +130,6 @@ For real database checks, create a **separate empty database** ending in `_test`
 TEST_DB_DATABASE=bytetech_week7_test DB_USER=your_test_user DB_PASSWORD=your_test_password npm run test:integration
 ```
 
-Set `DB_HOST`/`DB_PORT` or optional `DB_SOCKET` as needed. This command applies migrations to the test database and removes only its own uniquely named fixtures afterward; the schema remains. It refuses a missing/non-test database name. Its eight scenarios verify migration reruns, SQL persistence, concurrent shared-address saves, concurrent cart additions, transactions, foreign keys, unique/check constraints and user deletion. Test products are temporary fixtures, not the A1 catalog seed.
+Set `DB_HOST`/`DB_PORT` or optional `DB_SOCKET` as needed. This command applies migrations to the test database and removes only its own uniquely named fixtures afterward; the schema remains. It refuses a missing/non-test database name. Its eight account/cart scenarios verify migration reruns, SQL persistence, concurrent shared-address saves, concurrent cart additions, transactions, foreign keys, unique/check constraints and user deletion. Those test products are temporary fixtures. The catalog scenarios run the A1 seed twice in the test database to confirm it creates no duplicates, then read the seeded categories, pages and product details through the API; the seeded catalog stays in the test database.
 
 These checks cover A3/A4; A12's required payment-confirmation tests still belong to the later payment work.

@@ -6,6 +6,8 @@ import { createAccountRoutes } from './accounts/routes.js';
 import { createSessionSecurity } from './accounts/security.js';
 import { createCartStore } from './cart/store.js';
 import { createCartRoutes } from './cart/routes.js';
+import { createCatalogStore } from './catalog/store.js';
+import { createCatalogRoutes } from './catalog/routes.js';
 import { HttpError } from './errors.js';
 
 export function createApp({ db, corsOrigin = 'http://localhost:5173', sessionOptions = {}, stores = {}, attemptLimit = 20, logger = console }) {
@@ -35,6 +37,7 @@ export function createApp({ db, corsOrigin = 'http://localhost:5173', sessionOpt
   const api = express.Router();
   api.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); }, security.trustedOrigin, security.attachSession);
   api.use(createAccountRoutes({ store: accounts, security, attemptLimit }));
+  api.use(createCatalogRoutes({ store: stores.catalog ?? createCatalogStore(db) }));
   api.use('/cart', createCartRoutes({ store: stores.cart ?? createCartStore(db), security }));
   app.use('/api/v1', api);
   app.use((req, res) => res.status(404).json({ error: 'Route not found.' }));

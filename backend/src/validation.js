@@ -22,7 +22,7 @@ export function positiveInteger(value, name) {
   return value;
 }
 
-export function pathId(value) {
-  if (!/^[1-9]\d{0,9}$/.test(value)) throw new HttpError(400, 'Invalid product ID.');
-  return positiveInteger(Number(value), 'productId');
+export function pathId(value, name = 'product') {
+  if (typeof value !== 'string' || !/^[1-9]\d{0,9}$/.test(value)) throw new HttpError(400, `Invalid ${name} ID.`);
+  return positiveInteger(Number(value), `${name}Id`);
 }

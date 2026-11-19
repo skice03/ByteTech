@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Illustration of the 34&quot; Curved Ultrawide Monitor, 144 Hz">
+  <title>Illustration of the 34&quot; Curved Ultrawide Monitor, 144 Hz</title>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d9488" stop-opacity="0.18"/><stop offset="1" stop-color="#0d9488" stop-opacity="0.04"/></linearGradient></defs>
+  <rect width="800" height="600" fill="#ffffff"/>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <ellipse cx="400" cy="520" rx="260" ry="22" fill="#1f2937" opacity="0.08"/>
+    <path d="M100 150 Q400 110 700 150 V390 Q400 350 100 390 Z" fill="#1f2937"/>
+    <path d="M116 164 Q400 126 684 164 V376 Q400 338 116 376 Z" fill="#0d9488" opacity="0.85"/>
+    <path d="M116 376 L280 260 L400 320 L540 230 L684 376 Q400 338 116 376 Z" fill="#f9fafb" opacity="0.3"/>
+    <rect x="380" y="370" width="40" height="100" fill="#374151"/>
+    <rect x="300" y="466" width="200" height="16" rx="8" fill="#374151"/>
+</svg>

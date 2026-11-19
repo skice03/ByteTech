@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Illustration of the 8 GB Graphics Card, Compact">
+  <title>Illustration of the 8 GB Graphics Card, Compact</title>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5" stop-opacity="0.18"/><stop offset="1" stop-color="#4f46e5" stop-opacity="0.04"/></linearGradient></defs>
+  <rect width="800" height="600" fill="#ffffff"/>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <ellipse cx="400" cy="520" rx="260" ry="22" fill="#1f2937" opacity="0.08"/>
+    <rect x="140" y="200" width="520" height="200" rx="18" fill="#1f2937"/>
+    <rect x="160" y="400" width="300" height="22" fill="#ca8a04"/>
+    <circle cx="280" cy="300" r="78" fill="#374151"/><circle cx="280" cy="300" r="20" fill="#4f46e5"/>
+      <path d="M280 300 Q330 250 310 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(0 280 300)"/><path d="M280 300 Q330 250 310 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(51.4 280 300)"/><path d="M280 300 Q330 250 310 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(102.8 280 300)"/><path d="M280 300 Q330 250 310 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(154.2 280 300)"/><path d="M280 300 Q330 250 310 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(205.6 280 300)"/><path d="M280 300 Q330 250 310 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(257 280 300)"/><path d="M280 300 Q330 250 310 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(308.4 280 300)"/><circle cx="520" cy="300" r="78" fill="#374151"/><circle cx="520" cy="300" r="20" fill="#4f46e5"/>
+      <path d="M520 300 Q570 250 550 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(0 520 300)"/><path d="M520 300 Q570 250 550 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(51.4 520 300)"/><path d="M520 300 Q570 250 550 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(102.8 520 300)"/><path d="M520 300 Q570 250 550 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(154.2 520 300)"/><path d="M520 300 Q570 250 550 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(205.6 520 300)"/><path d="M520 300 Q570 250 550 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(257 520 300)"/><path d="M520 300 Q570 250 550 232" stroke="#e5e7eb" stroke-width="8" fill="none" transform="rotate(308.4 520 300)"/>
+    <rect x="140" y="200" width="520" height="14" rx="7" fill="#4f46e5"/>
+</svg>
