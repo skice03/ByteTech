@@ -9,8 +9,6 @@ ByteTech is a computer hardware and software store built with React, Express and
 - **A3 · Cart.** Add, update and remove items. The server checks stock and calculates the total. The cart persists after logout.
 - **A4 · Accounts.** Register, log in, log out and save delivery addresses.
 
-The week 7 materials include the [presentation slides](presentation/p2-slides.pdf) and the [project specification](presentation/p2-specification.pdf).
-
 ## Run locally
 
 Use Node.js 24+ and a running MySQL 8.4+ database with a user that can create tables. [Database setup](backend/api.md#database-setup)
