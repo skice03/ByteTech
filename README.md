@@ -1,32 +1,36 @@
 # ByteTech
 
-ByteTech is an e-commerce project for computer hardware, software licenses and other tech products.
+ByteTech is an e-commerce project for computer hardware, software licenses and other tech products. The planned stack is React, Express, MySQL and Stripe in test mode.
 
-## Stack:
+The scope covers mandatory requirements A1–A12. No bonus features are selected.
 
-* **Frontend:** React
-* **Backend:** Express
-* **Database:** MySQL
-* **Payments:** Stripe (test mode)
+## Implemented so far
 
-## Team:
+- Database design and base API setup.
+- **A4:** registration, login/logout and saved delivery addresses.
+- **A3:** persistent shopping cart, server-calculated RON totals and stock checks.
+- Account/cart validation, session protection and automated tests.
 
-* Cipu Marinel (backend)
-* Bancu Alexandru-Georgian (frontend)
+The React interface, catalog/search, checkout, payments, order history and administration are still planned.
 
-Includes the database design, base API, user accounts with saved addresses (A4), and a persistent shopping cart (A3). The React interface and product catalog are still to be added.
+## Run locally
 
-Scope: mandatory requirements A1–A12; no bonus features selected.
+Requires Node.js 24+ and MySQL 8.4+, with a database and user created. The current application starts the backend API.
 
-Use Node.js 24 or later. Run these commands from the `ByteTech` root:
+From the `ByteTech` root, copy the example configuration:
 
 ```sh
 cp -n .env.example .env
+```
+
+Set your MySQL credentials in `.env`, then run:
+
+```sh
 npm --prefix backend ci
 npm --prefix backend run db:migrate
 npm --prefix backend run dev
 ```
 
-The copy command preserves an existing `.env`. Start MySQL 8.4 or later, create the database/user and set their credentials in `.env` before running the migration. Check the API at <http://localhost:3000/api/v1/health>.
+Check the API at <http://localhost:3000/api/v1/health>.
 
-Run `npm --prefix backend test` for the account/cart checks. Setup details, API examples and the P2 checklist are in [backend/README.md](backend/README.md).
+Run tests with `npm --prefix backend test`. Database setup and endpoint details are in the [API reference](backend/api.md).
