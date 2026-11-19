@@ -4,15 +4,7 @@ The Express/MySQL API serves the catalog (A1), product-name search (A2), persist
 
 ## Database setup
 
-Use Node.js 24+ and MySQL 8.4+. Start MySQL and create a development database and user using your MySQL administrator account:
-
-```sql
-CREATE DATABASE bytetech CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-CREATE USER 'bytetech'@'localhost' IDENTIFIED BY 'replace_with_your_local_password';
-GRANT ALL PRIVILEGES ON bytetech.* TO 'bytetech'@'localhost';
-```
-
-Once the database exists, follow the [project README](../README.md#run-locally) to configure and start the API.
+To create the MySQL database and user, configure `.env` and start the API, follow the [project README](../README.md#run-locally).
 
 `.env` is local and ignored by Git. `.env.example` contains public example values, not live credentials. `CORS_ORIGIN` must be the exact frontend origin, normally `http://localhost:5173`, with no trailing slash. `SESSION_TTL_HOURS` defaults to 24 (allowed: 1–168); existing configuration files can omit it. `NODE_ENV=production` enables Secure cookies and requires HTTPS. An optional `DB_SOCKET` can select a local Unix socket instead of TCP.
 

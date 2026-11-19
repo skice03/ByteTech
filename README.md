@@ -1,8 +1,6 @@
 # ByteTech
 
-ByteTech is a computer hardware and software store built with React, Express and MySQL. The project covers A1–A12 and plans to use Stripe in test mode. No bonus features are selected.
-
-## Working prototype
+ByteTech is a computer hardware and software store built with React, Express and MySQL.
 
 - **A1 · Catalog.** Browse 34 seeded products in five categories, with product pages, images, RON prices and stock.
 - **A2 · Search.** Search by product name and see when nothing matches.
@@ -11,28 +9,42 @@ ByteTech is a computer hardware and software store built with React, Express and
 
 ## Run locally
 
-Use Node.js 24+ and a running MySQL 8.4+ database with a user that can create tables. [Database setup](backend/api.md#database-setup)
+Use Node.js 24+ with npm. Start MySQL 8.4+ and run the shell commands from the `ByteTech` repository root.
 
-From the repository root, copy the configuration and set your MySQL credentials in `.env`.
+### First-time setup
+
+If you need a database and user, open a MySQL administrator session (`mysql -u root -p`) and run this SQL. Replace `your_local_password` with your chosen password.
+
+```sql
+CREATE DATABASE bytetech CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE USER 'bytetech'@'localhost' IDENTIFIED BY 'your_local_password';
+GRANT ALL PRIVILEGES ON bytetech.* TO 'bytetech'@'localhost';
+```
+
+Back in your shell (`exit` leaves the MySQL client), copy the configuration template.
 
 ```sh
 cp -n .env.example .env
 ```
 
-Run the one-time setup to install dependencies, migrate the database and seed the catalog.
+Set `DB_PASSWORD` in `.env` to your MySQL user's password. Adjust the other `DB_` values if your connection differs. Then install dependencies, create the tables and load the sample products.
 
 ```sh
 npm run setup
 ```
 
-Start the API and storefront in separate terminals.
+### Start the app
+
+Start the API in one terminal (port 3000).
 
 ```sh
 npm --prefix backend run dev
 ```
 
+Start the storefront in a second terminal and leave both running.
+
 ```sh
 npm --prefix frontend run dev
 ```
 
-Open [ByteTech](http://localhost:5173). Choose **Log in → Create an account** for your first visit. Run the API tests with `npm --prefix backend test`.
+Open [ByteTech](http://localhost:5173).
