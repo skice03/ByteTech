@@ -4,7 +4,7 @@ import { createApp } from './app.js';
 
 const config = readConfig();
 const db = createDatabase(config.database);
-const server = createApp({ db, corsOrigin: config.corsOrigin }).listen(config.port, () => {
+const server = createApp({ db, corsOrigin: config.corsOrigin, sessionOptions: config.sessionOptions }).listen(config.port, () => {
   console.info(`ByteTech API listening on http://localhost:${config.port}/api/v1`);
 });
 
