@@ -48,3 +48,5 @@ npm --prefix frontend run dev
 ```
 
 Open [ByteTech](http://localhost:5173).
+
+Some AI agents were used for this project, more exactly ChatGPT Codex and Claude Code.
